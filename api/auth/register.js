@@ -87,6 +87,6 @@ module.exports = async function handler(req, res) {
       null
     );
   } catch (err) {
-    return sendJson(res, 500, false, null, 'Registration service error. Check Sheet bridge setup.');
+    return sendJson(res, 500, false, null, err.message || 'Registration error');
   }
 };

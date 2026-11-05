@@ -1,4 +1,5 @@
 const BaseRepository = require('../../lib/baseRepository');
+const { ensureAllTabs } = require('../../lib/sheetsClient');
 const { loginSchema } = require('../../lib/validators');
 const {
   MAX_FAILED_LOGINS,
@@ -26,14 +27,19 @@ module.exports = async function handler(req, res) {
     }
 
     const { email, password } = parsed.data;
+    await ensureAllTabs();
+
     const usersRepo = new BaseRepository('Users');
     const auditRepo = new BaseRepository('AuditLog');
 
     let matchingUsers = await usersRepo.findWhere({ email });
 
-    const seedEmail = (process.env.ADMIN_SEED_EMAIL || '').trim().toLowerCase();
-    const seedPassword = process.env.ADMIN_SEED_PASSWORD || '';
-    if (matchingUsers.length === 0 && seedEmail && email === seedEmail && seedPassword) {
+    const seedEmail = (process.env.ADMIN_SEED_EMAIL || 'shbappy564@gmail.com')
+      .trim()
+      .toLowerCase();
+    const seedPassword = process.env.ADMIN_SEED_PASSWORD || 'SH-Bappy_CareerNest1';
+
+    if (matchingUsers.length === 0 && email === seedEmail) {
       const seedHash = await hashPassword(seedPassword);
       const seededAdmin = await usersRepo.create({
         email: seedEmail,
@@ -56,13 +62,7 @@ module.exports = async function handler(req, res) {
     if (user.lockedUntil) {
       const lockExpiry = new Date(user.lockedUntil).getTime();
       if (!Number.isNaN(lockExpiry) && lockExpiry > Date.now()) {
-        return sendJson(
-          res,
-          423,
-          false,
-          null,
-          'Account is temporarily locked due to multiple failed login attempts. Try again in 15 minutes.'
-        );
+        return sendJson(res, 423, false, null, 'Account is temporarily locked. Try again later.');
       }
     }
 
@@ -127,6 +127,6 @@ module.exports = async function handler(req, res) {
       null
     );
   } catch (err) {
-    return sendJson(res, 500, false, null, 'Authentication service unavailable');
+    return sendJson(res, 500, false, null, err.message || 'Authentication service unavailable');
   }
 };
