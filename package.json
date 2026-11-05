@@ -1,0 +1,31 @@
+{
+  "name": "careernest",
+  "version": "0.1.0",
+  "private": true,
+  "description": "University-centric job and internship platform",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "vercel dev",
+    "setup:sheets": "node scripts/setupSheets.js",
+    "test": "jest --runInBand",
+    "test:coverage": "jest --runInBand --coverage",
+    "lint": "eslint . --ext .js",
+    "format:check": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "bcryptjs": "2.4.3",
+    "googleapis": "144.0.0",
+    "jsonwebtoken": "9.0.2",
+    "uuid": "10.0.0",
+    "zod": "3.23.8"
+  },
+  "devDependencies": {
+    "eslint": "8.57.1",
+    "eslint-config-prettier": "9.1.0",
+    "jest": "29.7.0",
+    "prettier": "3.3.3"
+  }
+}

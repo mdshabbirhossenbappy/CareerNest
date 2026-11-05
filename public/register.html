@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register — CareerNest</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/" class="brand">CareerNest</a>
+      <nav class="nav-links">
+        <a href="/login" class="btn btn-outline">Sign In</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="card auth-card">
+        <h1>Create Account</h1>
+        <p class="subtitle">Join your university career network</p>
+
+        <div id="register-alert" class="alert" role="alert"></div>
+
+        <form id="register-form" novalidate>
+          <div class="form-group">
+            <label for="fullName">Full Name or Company Name</label>
+            <input type="text" id="fullName" name="fullName" required minlength="2" />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" name="email" required />
+          </div>
+
+          <div class="form-group">
+            <label for="role">Account Role</label>
+            <select id="role" name="role" required>
+              <option value="STUDENT">Student / Graduate</option>
+              <option value="EMPLOYER">Employer</option>
+              <option value="RECRUITER">Recruiter</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password (min 10 chars, letters &amp; numbers)</label>
+            <input type="password" id="password" name="password" required minlength="10" />
+          </div>
+
+          <button type="submit" id="register-submit" class="btn btn-full">Create Account</button>
+        </form>
+
+        <p class="footer-text">Already have an account? <a href="/login">Sign In</a></p>
+      </section>
+    </main>
+
+    <script type="module" src="/js/auth.js"></script>
+  </body>
+</html>

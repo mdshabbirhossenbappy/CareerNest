@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CareerNest — University Career & Internship Platform</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/" class="brand">CareerNest</a>
+      <nav class="nav-links">
+        <a href="/login" class="btn btn-outline">Sign In</a>
+        <a href="/register" class="btn">Register</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="card" id="guest-box">
+        <h1>Verified University Employment Ecosystem</h1>
+        <p class="subtitle">
+          Connect students, graduates, verified employers, and the university career office in one
+          trusted platform.
+        </p>
+        <div class="nav-links">
+          <a href="/register" class="btn">Create an Account</a>
+          <a href="/login" class="btn btn-outline">Sign In to Existing Account</a>
+        </div>
+      </section>
+
+      <section class="card hidden" id="session-box">
+        <h1>Welcome to CareerNest</h1>
+        <p class="subtitle">You are securely authenticated via HttpOnly JWT Cookie.</p>
+        <p style="margin-bottom: 1rem">
+          <strong>Logged in as:</strong> <span id="user-email"></span>
+          <span class="badge" id="user-role"></span>
+        </p>
+        <button type="button" id="logout-btn" class="btn btn-outline">Sign Out</button>
+      </section>
+    </main>
+
+    <script type="module" src="/js/auth.js"></script>
+  </body>
+</html>
