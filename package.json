@@ -4,7 +4,7 @@
   "private": true,
   "description": "University-centric job and internship platform",
   "engines": {
-    "node": ">=20.0.0"
+    "node": "24.x"
   },
   "scripts": {
     "dev": "vercel dev",
