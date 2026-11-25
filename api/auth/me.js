@@ -17,7 +17,7 @@ module.exports = async function handler(req, res) {
 
     const decoded = verifyJwt(token);
     const usersRepo = new BaseRepository('Users');
-    const user = await usersRepo.findById(decoded.userId);
+    const user = await usersRepo.findById(decoded.userId, { useCache: true });
 
     if (!user || user.status !== 'ACTIVE') {
       return sendJson(res, 401, false, null, 'Session invalid or expired');
@@ -37,7 +37,7 @@ module.exports = async function handler(req, res) {
       },
       null
     );
-  } catch (err) {
+  } catch {
     return sendJson(res, 401, false, null, 'Invalid or expired authentication token');
   }
 };

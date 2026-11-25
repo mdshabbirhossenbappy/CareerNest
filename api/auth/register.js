@@ -1,5 +1,5 @@
 const BaseRepository = require('../../lib/baseRepository');
-const { ensureAllTabs } = require('../../lib/sheetsClient');
+const { batchAppendTabRows } = require('../../lib/sheetsClient');
 const { registerSchema } = require('../../lib/validators');
 const { hashPassword, getClientIp, sendJson } = require('../../lib/security');
 
@@ -17,18 +17,19 @@ module.exports = async function handler(req, res) {
     }
 
     const { email, password, role, fullName, companyName } = parsed.data;
-
-    await ensureAllTabs();
     const usersRepo = new BaseRepository('Users');
     const auditRepo = new BaseRepository('AuditLog');
 
-    const existing = await usersRepo.findWhere({ email });
+    const [existing, passwordHash] = await Promise.all([
+      usersRepo.findWhere({ email }, { useCache: false }),
+      hashPassword(password),
+    ]);
+
     if (existing.length > 0) {
       return sendJson(res, 409, false, null, 'Unable to register with the provided email');
     }
 
-    const passwordHash = await hashPassword(password);
-    const createdUser = await usersRepo.create({
+    const preparedUser = usersRepo.prepareRecord({
       email,
       passwordHash,
       role,
@@ -37,9 +38,12 @@ module.exports = async function handler(req, res) {
       lockedUntil: '',
     });
 
+    const createdUser = preparedUser.record;
+    const batchEntries = [{ tabName: 'Users', values: preparedUser.values }];
+
     if (role === 'STUDENT') {
       const studentRepo = new BaseRepository('StudentProfiles');
-      await studentRepo.create({
+      const preparedProfile = studentRepo.prepareRecord({
         userId: createdUser.id,
         fullName: fullName || email.split('@')[0],
         studentIdNo: '',
@@ -52,9 +56,10 @@ module.exports = async function handler(req, res) {
         graduationYear: '',
         verifiedByAdmin: 'false',
       });
+      batchEntries.push({ tabName: 'StudentProfiles', values: preparedProfile.values });
     } else if (role === 'EMPLOYER' || role === 'RECRUITER') {
       const employerRepo = new BaseRepository('EmployerProfiles');
-      await employerRepo.create({
+      const preparedProfile = employerRepo.prepareRecord({
         userId: createdUser.id,
         companyName: companyName || fullName || 'Pending Company',
         website: '',
@@ -62,15 +67,19 @@ module.exports = async function handler(req, res) {
         description: '',
         verifiedByAdmin: 'false',
       });
+      batchEntries.push({ tabName: 'EmployerProfiles', values: preparedProfile.values });
     }
 
-    await auditRepo.create({
+    const preparedAudit = auditRepo.prepareRecord({
       actorId: createdUser.id,
       action: 'AUTH_REGISTER',
       entity: 'Users',
       entityId: createdUser.id,
       ip: getClientIp(req),
     });
+    batchEntries.push({ tabName: 'AuditLog', values: preparedAudit.values });
+
+    await batchAppendTabRows(batchEntries);
 
     return sendJson(
       res,

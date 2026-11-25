@@ -1,5 +1,4 @@
 const BaseRepository = require('../../lib/baseRepository');
-const { ensureAllTabs } = require('../../lib/sheetsClient');
 const { loginSchema } = require('../../lib/validators');
 const {
   MAX_FAILED_LOGINS,
@@ -27,12 +26,10 @@ module.exports = async function handler(req, res) {
     }
 
     const { email, password } = parsed.data;
-    await ensureAllTabs();
-
     const usersRepo = new BaseRepository('Users');
     const auditRepo = new BaseRepository('AuditLog');
 
-    let matchingUsers = await usersRepo.findWhere({ email });
+    let matchingUsers = await usersRepo.findWhere({ email }, { useCache: false });
 
     const seedEmail = (process.env.ADMIN_SEED_EMAIL || 'shbappy564@gmail.com')
       .trim()
@@ -78,39 +75,46 @@ module.exports = async function handler(req, res) {
         ? new Date(Date.now() + LOCKOUT_DURATION_MS).toISOString()
         : '';
 
-      await usersRepo.update(user.id, {
-        failedLoginCount: String(nextCount),
-        lockedUntil,
-      });
-
-      await auditRepo.create({
-        actorId: user.id,
-        action: shouldLock ? 'AUTH_LOCKOUT' : 'AUTH_LOGIN_FAILURE',
-        entity: 'Users',
-        entityId: user.id,
-        ip: getClientIp(req),
-      });
+      await Promise.all([
+        usersRepo.update(user.id, {
+          failedLoginCount: String(nextCount),
+          lockedUntil,
+        }),
+        auditRepo.create({
+          actorId: user.id,
+          action: shouldLock ? 'AUTH_LOCKOUT' : 'AUTH_LOGIN_FAILURE',
+          entity: 'Users',
+          entityId: user.id,
+          ip: getClientIp(req),
+        }),
+      ]);
 
       return sendJson(res, 401, false, null, 'Invalid email or password');
-    }
-
-    if (user.failedLoginCount !== '0' || user.lockedUntil !== '') {
-      await usersRepo.update(user.id, {
-        failedLoginCount: '0',
-        lockedUntil: '',
-      });
     }
 
     const token = signJwt({ userId: user.id, role: user.role });
     res.setHeader('Set-Cookie', buildAuthCookie(token));
 
-    await auditRepo.create({
-      actorId: user.id,
-      action: 'AUTH_LOGIN_SUCCESS',
-      entity: 'Users',
-      entityId: user.id,
-      ip: getClientIp(req),
-    });
+    const postLoginOps = [
+      auditRepo.create({
+        actorId: user.id,
+        action: 'AUTH_LOGIN_SUCCESS',
+        entity: 'Users',
+        entityId: user.id,
+        ip: getClientIp(req),
+      }),
+    ];
+
+    if (user.failedLoginCount !== '0' || user.lockedUntil !== '') {
+      postLoginOps.push(
+        usersRepo.update(user.id, {
+          failedLoginCount: '0',
+          lockedUntil: '',
+        })
+      );
+    }
+
+    await Promise.all(postLoginOps);
 
     return sendJson(
       res,
