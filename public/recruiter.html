@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recruiter Dashboard — CareerNest</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/" class="brand">CareerNest</a>
+      <nav class="nav-links" id="nav-actions"></nav>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <div class="section-header">
+          <div>
+            <h1>Recruiter Dashboard</h1>
+            <p class="subtitle">Signed in as <strong id="employer-email"></strong></p>
+          </div>
+          <span class="badge" id="employer-verified-badge">Checking...</span>
+        </div>
+        <div id="unverified-notice" class="alert alert-warning hidden">
+          Your company profile is awaiting University Admin verification. You can update your
+          company profile now, and post jobs once verified.
+        </div>
+      </section>
+
+      <div class="grid-2">
+        <section class="card">
+          <h2>Company Profile</h2>
+          <div id="company-alert" class="alert hidden" role="alert"></div>
+          <form id="employer-profile-form">
+            <div class="form-group">
+              <label for="companyName">Company Name</label>
+              <input type="text" id="companyName" required />
+            </div>
+            <div class="form-group">
+              <label for="website">Website (https://...)</label>
+              <input type="url" id="website" />
+            </div>
+            <div class="form-group">
+              <label for="industry">Industry</label>
+              <input type="text" id="industry" placeholder="Software, FinTech, Telecom..." />
+            </div>
+            <div class="form-group">
+              <label for="description">Company Description</label>
+              <textarea id="description"></textarea>
+            </div>
+            <button type="submit" class="btn btn-full">Save Company Profile</button>
+          </form>
+        </section>
+
+        <section class="card">
+          <h2>Post a Job or Internship</h2>
+          <div id="job-post-alert" class="alert hidden" role="alert"></div>
+          <form id="post-job-form">
+            <div class="form-group">
+              <label for="job-title">Job Title</label>
+              <input type="text" id="job-title" required />
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="job-type">Employment Type</label>
+                <select id="job-type" required>
+                  <option value="INTERNSHIP">Internship</option>
+                  <option value="FULL_TIME">Full Time</option>
+                  <option value="PART_TIME">Part Time</option>
+                  <option value="CONTRACT">Contract</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="job-departmentId">Target Department</label>
+                <select id="job-departmentId"></select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="job-location">Location</label>
+                <input type="text" id="job-location" required placeholder="Dhaka / Remote" />
+              </div>
+              <div class="form-group">
+                <label for="job-deadline">Deadline</label>
+                <input type="date" id="job-deadline" required />
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label for="job-salaryMin">Salary Min</label>
+                <input type="number" id="job-salaryMin" min="0" required />
+              </div>
+              <div class="form-group">
+                <label for="job-salaryMax">Salary Max</label>
+                <input type="number" id="job-salaryMax" min="0" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="job-skills">Required Skills (comma separated)</label>
+              <input type="text" id="job-skills" required placeholder="JavaScript, SQL, Git" />
+            </div>
+            <div class="form-group">
+              <label for="job-description">Job Description</label>
+              <textarea id="job-description" required minlength="10"></textarea>
+            </div>
+            <button type="submit" id="post-job-submit" class="btn btn-full">
+              Submit Job for Admin Approval
+            </button>
+          </form>
+        </section>
+      </div>
+
+      <section class="card">
+        <h2>My Job Postings</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="employer-jobs-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-header">
+          <h2>Applicant Pipeline &amp; Interviews</h2>
+          <select id="applicant-status-filter">
+            <option value="">All Statuses</option>
+            <option value="SUBMITTED">SUBMITTED</option>
+            <option value="UNDER_REVIEW">UNDER_REVIEW</option>
+            <option value="SHORTLISTED">SHORTLISTED</option>
+            <option value="INTERVIEW_SCHEDULED">INTERVIEW_SCHEDULED</option>
+            <option value="SELECTED">SELECTED</option>
+            <option value="OFFER_ACCEPTED">OFFER_ACCEPTED</option>
+            <option value="REJECTED">REJECTED</option>
+          </select>
+        </div>
+        <div class="grid-2" id="applicants-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Notifications</h2>
+        <div id="notifications-list"></div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop hidden" id="interview-modal">
+      <div class="modal-box">
+        <div class="section-header">
+          <h2>Schedule Interview</h2>
+          <button type="button" class="btn btn-outline btn-sm" id="close-interview-modal">
+            Close
+          </button>
+        </div>
+        <div id="interview-alert" class="alert hidden" role="alert"></div>
+        <form id="interview-form">
+          <div class="form-group">
+            <label for="iv-date">Date &amp; Time</label>
+            <input type="datetime-local" id="iv-date" required />
+          </div>
+          <div class="form-group">
+            <label for="iv-mode">Mode</label>
+            <select id="iv-mode" required>
+              <option value="ONLINE">Online</option>
+              <option value="ONSITE">On-Site</option>
+              <option value="PHONE">Phone</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="iv-link">Meeting Link (optional https URL)</label>
+            <input type="url" id="iv-link" placeholder="https://meet.google.com/..." />
+          </div>
+          <button type="submit" class="btn btn-full">Confirm Interview</button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <p>
+        © 2026
+        <a
+          href="https://github.com/mdshabbirhossenbappy"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Md. Shabbir Hossen Bappy</a
+        >. All rights reserved.
+      </p>
+    </footer>
+
+    <script type="module" src="/js/employer.js"></script>
+  </body>
+</html>

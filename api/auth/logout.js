@@ -1,6 +1,10 @@
-const { buildClearCookie, sendJson } = require('../../lib/security');
+const { applyCors, buildClearCookie, sendJson } = require('../../lib/security');
 
 module.exports = async function handler(req, res) {
+  applyCors(req, res);
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
     return sendJson(res, 405, false, null, 'Method not allowed');

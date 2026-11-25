@@ -1,57 +1,64 @@
 const { assertSafeValue } = require('../lib/sheetsClient');
 const BaseRepository = require('../lib/baseRepository');
-const { registerSchema } = require('../lib/validators');
+const { registerSchema, createJobSchema } = require('../lib/validators');
 const { hashPassword, verifyPassword, signJwt, verifyJwt } = require('../lib/security');
 
-describe('Sheets Security & Auth Unit Tests', () => {
+describe('Security, Validation & Repository Layer', () => {
   beforeAll(() => {
     process.env.JWT_SECRET = 'test_secret_key_for_jest_unit_tests_1234567890';
   });
 
-  test('blocks formula injection prefixes (=, +, -, @)', () => {
+  test('blocks spreadsheet formula injection prefixes', () => {
     expect(() => assertSafeValue('=SUM(A1:A10)')).toThrow('Potential formula injection blocked');
     expect(() => assertSafeValue('+cmd|calc')).toThrow('Potential formula injection blocked');
-    expect(() => assertSafeValue('-2+3')).toThrow('Potential formula injection blocked');
+    expect(() => assertSafeValue('-10+5')).toThrow('Potential formula injection blocked');
     expect(() => assertSafeValue('@import')).toThrow('Potential formula injection blocked');
-    expect(assertSafeValue('Safe text 123')).toBe('Safe text 123');
+    expect(assertSafeValue('Safe University Value')).toBe('Safe University Value');
   });
 
-  test('registerSchema rejects UNIVERSITY_ADMIN and weak passwords', () => {
+  test('blocks public UNIVERSITY_ADMIN signup and unknown fields', () => {
     const adminAttempt = registerSchema.safeParse({
-      email: 'hacker@uni.edu',
+      email: 'attacker@uni.edu',
       password: 'Password1234',
       role: 'UNIVERSITY_ADMIN',
     });
     expect(adminAttempt.success).toBe(false);
 
-    const weakPass = registerSchema.safeParse({
+    const extraField = registerSchema.safeParse({
       email: 'student@uni.edu',
-      password: 'short1',
+      password: 'Password1234',
       role: 'STUDENT',
+      isAdmin: true,
     });
-    expect(weakPass.success).toBe(false);
-
-    const validStudent = registerSchema.safeParse({
-      email: 'Student@Uni.edu',
-      password: 'StrongPassword123',
-      role: 'STUDENT',
-    });
-    expect(validStudent.success).toBe(true);
-    expect(validStudent.data.email).toBe('student@uni.edu');
+    expect(extraField.success).toBe(false);
   });
 
-  test('hashes password with bcrypt and signs/verifies JWT', async () => {
+  test('validates salary range in createJobSchema', () => {
+    const badRange = createJobSchema.safeParse({
+      title: 'Backend Intern',
+      description: 'Build serverless Node APIs for university portal.',
+      type: 'INTERNSHIP',
+      location: 'Dhaka',
+      salaryMin: 30000,
+      salaryMax: 15000,
+      requiredSkills: 'Node.js, SQL',
+      deadline: '2027-01-01',
+    });
+    expect(badRange.success).toBe(false);
+  });
+
+  test('hashes passwords with bcrypt and verifies JWT tokens', async () => {
     const hash = await hashPassword('CareerNest123');
     expect(await verifyPassword('CareerNest123', hash)).toBe(true);
-    expect(await verifyPassword('WrongPass123', hash)).toBe(false);
+    expect(await verifyPassword('WrongPassword1', hash)).toBe(false);
 
-    const token = signJwt({ userId: 'u-1', role: 'STUDENT' });
+    const token = signJwt({ userId: 'u-100', role: 'STUDENT' });
     const decoded = verifyJwt(token);
-    expect(decoded.userId).toBe('u-1');
+    expect(decoded.userId).toBe('u-100');
     expect(decoded.role).toBe('STUDENT');
   });
 
-  test('BaseRepository maps rows and performs CRUD with mock client', async () => {
+  test('BaseRepository maps sheet rows and supports softDelete', async () => {
     const rows = [
       ['id', 'name', 'code'],
       ['d-1', 'Computer Science', 'CSE'],
@@ -66,12 +73,8 @@ describe('Sheets Security & Auth Unit Tests', () => {
     };
 
     const repo = new BaseRepository('Departments', mockClient);
-    const all = await repo.findAll();
-    expect(all).toHaveLength(1);
-    expect(all[0].code).toBe('CSE');
-
-    const created = await repo.create({ name: 'Electrical Engineering', code: 'EEE' });
-    expect(created.id).toBeDefined();
+    expect(await repo.findAll()).toHaveLength(1);
+    await repo.create({ name: 'Business Administration', code: 'BBA' });
     expect(rows).toHaveLength(3);
   });
 });

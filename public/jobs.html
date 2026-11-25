@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Job &amp; Internship Board — CareerNest</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <header class="navbar">
+      <a href="/" class="brand">CareerNest</a>
+      <nav class="nav-links" id="nav-actions"></nav>
+    </header>
+
+    <main class="container">
+      <section class="card">
+        <h1>Approved Jobs &amp; Internships</h1>
+        <p class="subtitle">Search verified openings filtered by department, salary, and type.</p>
+        <div id="jobs-alert" class="alert hidden" role="alert"></div>
+
+        <form id="filter-form" class="filter-bar">
+          <div class="form-group">
+            <label for="filter-q">Keyword or Skill</label>
+            <input type="text" id="filter-q" placeholder="React, Python, Analyst..." />
+          </div>
+          <div class="form-group">
+            <label for="filter-dept">Department</label>
+            <select id="filter-dept"></select>
+          </div>
+          <div class="form-group">
+            <label for="filter-type">Type</label>
+            <select id="filter-type">
+              <option value="">All Types</option>
+              <option value="INTERNSHIP">Internship</option>
+              <option value="FULL_TIME">Full Time</option>
+              <option value="PART_TIME">Part Time</option>
+              <option value="CONTRACT">Contract</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filter-location">Location</label>
+            <input type="text" id="filter-location" placeholder="Dhaka, Remote..." />
+          </div>
+          <div class="form-group">
+            <label for="filter-salary">Min Salary</label>
+            <input type="number" id="filter-salary" min="0" placeholder="15000" />
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-full">Search</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="grid-3" id="jobs-list"></section>
+      <div class="actions-row" id="pagination-bar"></div>
+    </main>
+
+    <div class="modal-backdrop hidden" id="apply-modal">
+      <div class="modal-box">
+        <div class="section-header">
+          <h2>Apply for Position</h2>
+          <button type="button" class="btn btn-outline btn-sm" id="close-apply-modal">Close</button>
+        </div>
+        <p class="subtitle" id="apply-job-title"></p>
+        <div id="apply-alert" class="alert hidden" role="alert"></div>
+        <form id="apply-form">
+          <div class="form-group">
+            <label for="coverLetter">Cover Letter (min 10 characters)</label>
+            <textarea id="coverLetter" required minlength="10"></textarea>
+          </div>
+          <button type="submit" id="apply-submit" class="btn btn-full">Submit Application</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="modal-backdrop hidden" id="report-modal">
+      <div class="modal-box">
+        <div class="section-header">
+          <h2>Report Listing</h2>
+          <button type="button" class="btn btn-outline btn-sm" id="close-report-modal">Close</button>
+        </div>
+        <div id="report-alert" class="alert hidden" role="alert"></div>
+        <form id="report-form">
+          <div class="form-group">
+            <label for="report-reason">Reason for Report</label>
+            <textarea id="report-reason" required minlength="5"></textarea>
+          </div>
+          <button type="submit" class="btn btn-danger btn-full">Submit Report</button>
+        </form>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+      <p>
+        © 2026
+        <a
+          href="https://github.com/mdshabbirhossenbappy"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Md. Shabbir Hossen Bappy</a
+        >. All rights reserved.
+      </p>
+    </footer>
+
+    <script type="module" src="/js/jobs.js"></script>
+  </body>
+</html>

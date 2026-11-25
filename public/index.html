@@ -3,41 +3,74 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CareerNest — University Career & Internship Platform</title>
+    <title>CareerNest — University Career &amp; Internship Platform</title>
     <link rel="stylesheet" href="/css/styles.css" />
   </head>
   <body>
     <header class="navbar">
       <a href="/" class="brand">CareerNest</a>
-      <nav class="nav-links">
-        <a href="/login" class="btn btn-outline">Sign In</a>
-        <a href="/register" class="btn">Register</a>
-      </nav>
+      <nav class="nav-links" id="nav-actions"></nav>
     </header>
 
     <main class="container">
-      <section class="card" id="guest-box">
+      <section class="hero">
         <h1>Verified University Employment Ecosystem</h1>
-        <p class="subtitle">
-          Connect students, graduates, verified employers, and the university career office in one
-          trusted platform.
+        <p>
+          Connecting university students, graduates, verified employers, recruiters, and the Career
+          Office through transparent workflows and skill-matched opportunities.
         </p>
-        <div class="nav-links">
-          <a href="/register" class="btn">Create an Account</a>
-          <a href="/login" class="btn btn-outline">Sign In to Existing Account</a>
+        <div class="nav-links" id="hero-actions">
+          <a href="/register" class="btn btn-light">Get Started</a>
+          <a href="/jobs" class="btn btn-outline btn-light">Browse Approved Jobs</a>
         </div>
       </section>
 
-      <section class="card hidden" id="session-box">
-        <h1>Welcome to CareerNest</h1>
-        <p class="subtitle">You are securely authenticated via HttpOnly JWT Cookie.</p>
-        <p class="session-info">
-          <strong>Logged in as:</strong> <span id="user-email"></span>
-          <span class="badge" id="user-role"></span>
-        </p>
-        <button type="button" id="logout-btn" class="btn btn-outline">Sign Out</button>
+      <section class="grid-3">
+        <article class="card">
+          <h2>For Students &amp; Graduates</h2>
+          <p class="subtitle">
+            Build your verified academic profile, check instant skill-match scores, bookmark roles,
+            and track every application stage live.
+          </p>
+        </article>
+        <article class="card">
+          <h2>For Verified Employers</h2>
+          <p class="subtitle">
+            Publish internships and full-time roles, filter university talent by skill match,
+            shortlist candidates, and schedule interviews.
+          </p>
+        </article>
+        <article class="card">
+          <h2>University Career Office</h2>
+          <p class="subtitle">
+            Verify student and company identities, approve job listings, monitor placement rates by
+            department, and enforce audit trails.
+          </p>
+        </article>
+      </section>
+
+      <section class="card">
+        <div class="section-header">
+          <h2>Latest Approved Opportunities</h2>
+          <a href="/jobs" class="btn btn-outline btn-sm">View All Jobs</a>
+        </div>
+        <div class="grid-3" id="featured-jobs">
+          <p class="subtitle">Loading latest openings...</p>
+        </div>
       </section>
     </main>
+
+    <footer class="site-footer">
+      <p>
+        © 2026
+        <a
+          href="https://github.com/mdshabbirhossenbappy"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Md. Shabbir Hossen Bappy</a
+        >. All rights reserved.
+      </p>
+    </footer>
 
     <script type="module" src="/js/auth.js"></script>
   </body>

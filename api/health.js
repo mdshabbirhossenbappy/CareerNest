@@ -1,21 +1,13 @@
-module.exports = async function handler(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+const { applyCors, sendJson } = require('../lib/security');
 
+module.exports = async function handler(req, res) {
+  applyCors(req, res);
+  if (req.method === 'OPTIONS') {
+    return res.status(204).end();
+  }
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
-    return res.status(405).json({
-      success: false,
-      data: null,
-      error: 'Method not allowed',
-    });
+    return sendJson(res, 405, false, null, 'Method not allowed');
   }
-
-  return res.status(200).json({
-    success: true,
-    data: {
-      status: 'ok',
-      service: 'CareerNest',
-    },
-    error: null,
-  });
+  return sendJson(res, 200, true, { status: 'ok', service: 'CareerNest' }, null);
 };
