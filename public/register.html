@@ -8,51 +8,66 @@
   </head>
   <body>
     <header class="navbar">
-      <a href="/" class="brand">CareerNest</a>
+      <a href="/" class="brand">
+        <img src="/assets/logo.svg" alt="CareerNest Logo" class="brand-logo" />
+        <span>CareerNest</span>
+      </a>
       <nav class="nav-links" id="nav-actions"></nav>
     </header>
 
     <main class="container">
-      <section class="card auth-card">
-        <h1>Create Account</h1>
-        <p class="subtitle">Join the verified university career network</p>
-
-        <div id="register-alert" class="alert hidden" role="alert"></div>
-
-        <form id="register-form" novalidate>
-          <div class="form-group">
-            <label for="fullName">Full Name or Company Name</label>
-            <input type="text" id="fullName" name="fullName" required minlength="2" />
+      <section class="auth-split">
+        <div class="auth-visual-panel">
+          <div>
+            <h2>Join Your Campus Network</h2>
+            <p>
+              Register as a Student, Employer, or Recruiter to unlock verified campus internships
+              and graduate placements.
+            </p>
           </div>
+          <img src="/assets/auth-graphic.svg" alt="CareerNest Onboarding Graphic" />
+        </div>
 
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required />
-          </div>
+        <div class="auth-form-panel">
+          <h1>Create Account</h1>
+          <p class="subtitle">Get verified by the University Career Office</p>
+          <div id="register-alert" class="alert hidden" role="alert"></div>
 
-          <div class="form-group">
-            <label for="role">Account Role</label>
-            <select id="role" name="role" required>
-              <option value="STUDENT">Student / Graduate</option>
-              <option value="EMPLOYER">Employer</option>
-              <option value="RECRUITER">Recruiter</option>
-            </select>
-          </div>
+          <form id="register-form" novalidate>
+            <div class="form-group">
+              <label for="fullName">Full Name or Company Name</label>
+              <input type="text" id="fullName" name="fullName" required minlength="2" />
+            </div>
 
-          <div class="form-group" id="department-group">
-            <label for="departmentId">Academic Department</label>
-            <select id="departmentId" name="departmentId"></select>
-          </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required />
+            </div>
 
-          <div class="form-group">
-            <label for="password">Password (min 10 chars, letters &amp; numbers)</label>
-            <input type="password" id="password" name="password" required minlength="10" />
-          </div>
+            <div class="form-group">
+              <label for="role">Account Role</label>
+              <select id="role" name="role" required>
+                <option value="STUDENT">Student / Graduate</option>
+                <option value="EMPLOYER">Employer</option>
+                <option value="RECRUITER">Recruiter</option>
+              </select>
+            </div>
 
-          <button type="submit" id="register-submit" class="btn btn-full">Create Account</button>
-        </form>
+            <div class="form-group" id="department-group">
+              <label for="departmentId">Academic Department</label>
+              <select id="departmentId" name="departmentId"></select>
+            </div>
 
-        <p class="footer-text">Already have an account? <a href="/login">Sign In</a></p>
+            <div class="form-group">
+              <label for="password">Password (min 10 chars, letters &amp; numbers)</label>
+              <input type="password" id="password" name="password" required minlength="10" />
+            </div>
+
+            <button type="submit" id="register-submit" class="btn btn-full">Create Account</button>
+          </form>
+
+          <p class="footer-text">Already have an account? <a href="/login">Sign In</a></p>
+        </div>
       </section>
     </main>
 

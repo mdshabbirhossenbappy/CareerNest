@@ -6,6 +6,8 @@ import {
   renderNavbar,
   populateDepartmentSelect,
   renderNotificationsPanel,
+  buildSkillMeter,
+  getInitials,
   statusBadgeClass,
   createEl,
   clearEl,
@@ -22,7 +24,8 @@ async function loadCompanyProfile() {
   document.getElementById('description').value = p.description || '';
 
   const badge = document.getElementById('employer-verified-badge');
-  badge.textContent = p.verifiedByAdmin === 'true' ? 'Verified Employer' : 'Pending Admin Verification';
+  badge.textContent =
+    p.verifiedByAdmin === 'true' ? 'Verified Employer' : 'Pending Admin Verification';
   badge.className = statusBadgeClass(p.verifiedByAdmin);
 
   const notice = document.getElementById('unverified-notice');
@@ -92,12 +95,17 @@ async function loadApplicants() {
   apps.forEach((app) => {
     const card = createEl('div', 'job-card');
     const top = createEl('div', 'section-header');
-    top.appendChild(createEl('h3', '', `${app.studentName} — ${app.jobTitle}`));
-    const badges = createEl('div', 'nav-links');
-    badges.appendChild(createEl('span', 'badge', `${app.skillMatch.score}% Match`));
-    badges.appendChild(createEl('span', statusBadgeClass(app.status), app.status));
-    top.appendChild(badges);
+    const titleRow = createEl('div', 'card-title-row');
+    titleRow.appendChild(createEl('div', 'avatar-circle', getInitials(app.studentName)));
+    const titleBox = createEl('div');
+    titleBox.appendChild(createEl('h3', '', app.studentName));
+    titleBox.appendChild(createEl('span', 'subtitle', app.jobTitle));
+    titleRow.appendChild(titleBox);
+    top.appendChild(titleRow);
+    top.appendChild(createEl('span', statusBadgeClass(app.status), app.status));
     card.appendChild(top);
+
+    card.appendChild(buildSkillMeter(app.skillMatch.score, 'Candidate Skill Fit'));
 
     card.appendChild(
       createEl(

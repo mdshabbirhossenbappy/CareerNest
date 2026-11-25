@@ -35,6 +35,25 @@ async function loadAdminDashboard() {
     statsGrid.appendChild(card);
   });
 
+  const chartBox = document.getElementById('dept-placement-chart');
+  if (chartBox) {
+    clearEl(chartBox);
+    data.deptStats.forEach((d) => {
+      const row = createEl('div', 'chart-row');
+      const head = createEl('div', 'chart-row-head');
+      head.appendChild(createEl('span', '', `${d.name} (${d.code})`));
+      head.appendChild(
+        createEl('span', '', `${d.placedStudents}/${d.totalStudents} (${d.placementRate}%)`)
+      );
+      row.appendChild(head);
+      const bar = createEl('progress', 'visual-bar bar-high');
+      bar.value = d.placementRate;
+      bar.max = 100;
+      row.appendChild(bar);
+      chartBox.appendChild(row);
+    });
+  }
+
   const empBody = document.getElementById('admin-employers-body');
   clearEl(empBody);
   data.employers.forEach((emp) => {
@@ -109,17 +128,6 @@ async function loadAdminDashboard() {
     }
     tr.appendChild(act);
     jobsBody.appendChild(tr);
-  });
-
-  const deptBody = document.getElementById('admin-depts-body');
-  clearEl(deptBody);
-  data.deptStats.forEach((d) => {
-    const tr = createEl('tr');
-    tr.appendChild(createEl('td', '', `${d.name} (${d.code})`));
-    tr.appendChild(createEl('td', '', String(d.totalStudents)));
-    tr.appendChild(createEl('td', '', String(d.placedStudents)));
-    tr.appendChild(createEl('td', '', `${d.placementRate}%`));
-    deptBody.appendChild(tr);
   });
 
   const repBody = document.getElementById('admin-reports-body');

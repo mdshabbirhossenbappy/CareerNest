@@ -8,43 +8,69 @@
   </head>
   <body>
     <header class="navbar">
-      <a href="/" class="brand">CareerNest</a>
+      <a href="/" class="brand">
+        <img src="/assets/logo.svg" alt="CareerNest Logo" class="brand-logo" />
+        <span>CareerNest</span>
+      </a>
       <nav class="nav-links" id="nav-actions"></nav>
     </header>
 
     <main class="container">
-      <section class="hero">
-        <h1>Verified University Employment Ecosystem</h1>
-        <p>
-          Connecting university students, graduates, verified employers, recruiters, and the Career
-          Office through transparent workflows and skill-matched opportunities.
-        </p>
-        <div class="nav-links" id="hero-actions">
-          <a href="/register" class="btn btn-light">Get Started</a>
-          <a href="/jobs" class="btn btn-outline btn-light">Browse Approved Jobs</a>
+      <section class="hero-split">
+        <div>
+          <span class="hero-eyebrow">Verified University Career Ecosystem</span>
+          <h1>Launch Campus Careers with Verified Talent &amp; Employers</h1>
+          <p>
+            Connect students, graduates, verified companies, recruiters, and the University Career
+            Office with skill-match scoring and transparent 6-stage application tracking.
+          </p>
+          <div class="nav-links" id="hero-actions">
+            <a href="/register" class="btn">Create Free Account</a>
+            <a href="/jobs" class="btn btn-outline">Browse Approved Jobs</a>
+          </div>
+          <div class="trust-strip">
+            <div class="trust-item">
+              <strong>100%</strong>
+              <span>Admin-Verified Jobs</span>
+            </div>
+            <div class="trust-item">
+              <strong>6 Stages</strong>
+              <span>Live Pipeline Tracker</span>
+            </div>
+            <div class="trust-item">
+              <strong>Smart Fit</strong>
+              <span>Instant Skill Scoring</span>
+            </div>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <img src="/assets/hero-graphic.svg" alt="CareerNest Dashboard Analytics Illustration" />
         </div>
       </section>
 
       <section class="grid-3">
         <article class="card">
-          <h2>For Students &amp; Graduates</h2>
+          <div class="feature-icon">ST</div>
+          <h2>Students &amp; Graduates</h2>
           <p class="subtitle">
-            Build your verified academic profile, check instant skill-match scores, bookmark roles,
-            and track every application stage live.
+            Build your verified academic profile, preview instant skill-match bars on every job,
+            bookmark openings, and track interviews live.
           </p>
         </article>
         <article class="card">
-          <h2>For Verified Employers</h2>
+          <div class="feature-icon">EM</div>
+          <h2>Verified Employers</h2>
           <p class="subtitle">
-            Publish internships and full-time roles, filter university talent by skill match,
+            Publish internships and full-time roles, filter university applicants by skill fit,
             shortlist candidates, and schedule interviews.
           </p>
         </article>
         <article class="card">
+          <div class="feature-icon">AD</div>
           <h2>University Career Office</h2>
           <p class="subtitle">
-            Verify student and company identities, approve job listings, monitor placement rates by
-            department, and enforce audit trails.
+            Verify student and company identities, approve job postings, visualize department
+            placement charts, and monitor audit logs.
           </p>
         </article>
       </section>
@@ -52,7 +78,7 @@
       <section class="card">
         <div class="section-header">
           <h2>Latest Approved Opportunities</h2>
-          <a href="/jobs" class="btn btn-outline btn-sm">View All Jobs</a>
+          <a href="/jobs" class="btn btn-outline btn-sm">Explore Full Job Board</a>
         </div>
         <div class="grid-3" id="featured-jobs">
           <p class="subtitle">Loading latest openings...</p>

@@ -8,32 +8,47 @@
   </head>
   <body>
     <header class="navbar">
-      <a href="/" class="brand">CareerNest</a>
+      <a href="/" class="brand">
+        <img src="/assets/logo.svg" alt="CareerNest Logo" class="brand-logo" />
+        <span>CareerNest</span>
+      </a>
       <nav class="nav-links" id="nav-actions"></nav>
     </header>
 
     <main class="container">
-      <section class="card auth-card">
-        <h1>Sign In</h1>
-        <p class="subtitle">Access your CareerNest dashboard</p>
-
-        <div id="login-alert" class="alert hidden" role="alert"></div>
-
-        <form id="login-form" novalidate>
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required />
+      <section class="auth-split">
+        <div class="auth-visual-panel">
+          <div>
+            <h2>Welcome Back to CareerNest</h2>
+            <p>
+              Protected by bcrypt hashing, HttpOnly SameSite=Strict cookies, and server-side audit
+              logging.
+            </p>
           </div>
+          <img src="/assets/auth-graphic.svg" alt="CareerNest Security Verification Graphic" />
+        </div>
 
-          <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required />
-          </div>
+        <div class="auth-form-panel">
+          <h1>Sign In</h1>
+          <p class="subtitle">Access your role-based CareerNest dashboard</p>
+          <div id="login-alert" class="alert hidden" role="alert"></div>
 
-          <button type="submit" id="login-submit" class="btn btn-full">Sign In</button>
-        </form>
+          <form id="login-form" novalidate>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" name="email" required />
+            </div>
 
-        <p class="footer-text">New to CareerNest? <a href="/register">Create an account</a></p>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" name="password" required />
+            </div>
+
+            <button type="submit" id="login-submit" class="btn btn-full">Sign In</button>
+          </form>
+
+          <p class="footer-text">New to CareerNest? <a href="/register">Create an account</a></p>
+        </div>
       </section>
     </main>
 

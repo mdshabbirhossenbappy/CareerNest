@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 380" fill="none">
+  <defs>
+    <linearGradient id="bgGlow" x1="0" y1="0" x2="540" y2="380" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="100%" stop-color="#eef2ff"/>
+    </linearGradient>
+    <linearGradient id="barBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#4f46e5"/>
+    </linearGradient>
+    <linearGradient id="barGreen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#34d399"/>
+    </linearGradient>
+  </defs>
+  <rect width="540" height="380" rx="24" fill="url(#bgGlow)"/>
+  <circle cx="470" cy="60" r="85" fill="#dbeafe" opacity="0.55"/>
+  <circle cx="70" cy="330" r="70" fill="#e0e7ff" opacity="0.65"/>
+
+  <rect x="36" y="34" width="330" height="236" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <circle cx="58" cy="54" r="5" fill="#f87171"/>
+  <circle cx="74" cy="54" r="5" fill="#fbbf24"/>
+  <circle cx="90" cy="54" r="5" fill="#34d399"/>
+  <rect x="115" y="48" width="120" height="12" rx="6" fill="#f1f5f9"/>
+
+  <rect x="56" y="80" width="290" height="62" rx="12" fill="#f8fafc" stroke="#e2e8f0"/>
+  <rect x="70" y="94" width="34" height="34" rx="9" fill="#2563eb"/>
+  <path d="M81 111L85 115L93 107" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="116" y="96" width="124" height="10" rx="5" fill="#1e293b"/>
+  <rect x="116" y="114" width="84" height="8" rx="4" fill="#94a3b8"/>
+  <rect x="266" y="98" width="66" height="24" rx="12" fill="#dcfce7"/>
+  <text x="299" y="114" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#15803d">94% Match</text>
+
+  <text x="58" y="170" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#475569">DEPARTMENT PLACEMENT GROWTH</text>
+  <rect x="64" y="210" width="28" height="40" rx="6" fill="#cbd5e1"/>
+  <rect x="108" y="196" width="28" height="54" rx="6" fill="#93c5fd"/>
+  <rect x="152" y="182" width="28" height="68" rx="6" fill="#60a5fa"/>
+  <rect x="196" y="190" width="28" height="60" rx="6" fill="#818cf8"/>
+  <rect x="240" y="172" width="28" height="78" rx="6" fill="url(#barBlue)"/>
+  <rect x="284" y="158" width="28" height="92" rx="6" fill="url(#barBlue)"/>
+  <line x1="56" y1="252" x2="342" y2="252" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <rect x="298" y="194" width="212" height="150" rx="16" fill="#ffffff" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="318" y="222" font-family="system-ui, sans-serif" font-size="12" font-weight="700" fill="#0f172a">Live Application Stage</text>
+  <circle cx="328" cy="252" r="8" fill="#10b981"/>
+  <line x1="336" y1="252" x2="372" y2="252" stroke="#10b981" stroke-width="3"/>
+  <circle cx="380" cy="252" r="8" fill="#10b981"/>
+  <line x1="388" y1="252" x2="424" y2="252" stroke="#2563eb" stroke-width="3"/>
+  <circle cx="432" cy="252" r="9" fill="#2563eb"/>
+  <line x1="441" y1="252" x2="474" y2="252" stroke="#cbd5e1" stroke-width="3"/>
+  <circle cx="482" cy="252" r="8" fill="#e2e8f0"/>
+  <rect x="318" y="276" width="172" height="10" rx="5" fill="#e2e8f0"/>
+  <rect x="318" y="276" width="128" height="10" rx="5" fill="url(#barGreen)"/>
+  <rect x="318" y="302" width="110" height="24" rx="12" fill="#eff6ff"/>
+  <text x="373" y="318" text-anchor="middle" font-family="system-ui, sans-serif" font-size="11" font-weight="700" fill="#1d4ed8">Interview Set</text>
+
+  <rect x="390" y="54" width="122" height="96" rx="16" fill="#0f172a"/>
+  <text x="408" y="84" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#94a3b8">VERIFIED</text>
+  <text x="408" y="114" font-family="system-ui, sans-serif" font-size="24" font-weight="800" fill="#ffffff">100%</text>
+  <text x="408" y="134" font-family="system-ui, sans-serif" font-size="11" fill="#38bdf8">Campus Trust</text>
+</svg>

@@ -5,6 +5,8 @@ import {
   loadSessionUser,
   renderNavbar,
   populateDepartmentSelect,
+  buildSkillMeter,
+  getInitials,
   createEl,
   clearEl,
 } from './api.js';
@@ -61,28 +63,26 @@ async function fetchAndRenderJobs(page = 1) {
 
     jobs.forEach((job) => {
       const card = createEl('article', 'job-card');
-      const header = createEl('div', 'section-header');
-      header.appendChild(createEl('h3', '', job.title));
-
-      if (job.skillMatch) {
-        const matchBadge = createEl(
-          'span',
-          job.skillMatch.score >= 60 ? 'badge badge-success' : 'badge badge-warning',
-          `${job.skillMatch.score}% Skill Match`
-        );
-        header.appendChild(matchBadge);
-      }
-      card.appendChild(header);
+      const titleRow = createEl('div', 'card-title-row');
+      titleRow.appendChild(createEl('div', 'avatar-circle', getInitials(job.companyName)));
+      const titleBox = createEl('div');
+      titleBox.appendChild(createEl('h3', '', job.title));
+      titleBox.appendChild(createEl('span', 'subtitle', job.companyName));
+      titleRow.appendChild(titleBox);
+      card.appendChild(titleRow);
 
       const meta = createEl('div', 'job-meta');
       meta.appendChild(createEl('span', 'badge', job.type));
-      meta.appendChild(createEl('span', '', job.companyName));
       meta.appendChild(createEl('span', '', job.location));
       meta.appendChild(createEl('span', '', job.departmentName));
       card.appendChild(meta);
 
+      if (job.skillMatch) {
+        card.appendChild(buildSkillMeter(job.skillMatch.score, 'Your Skill Match'));
+      }
+
       card.appendChild(createEl('p', '', job.description));
-      card.appendChild(createEl('p', 'subtitle', `Skills: ${job.requiredSkills}`));
+      card.appendChild(createEl('p', 'subtitle', `Required Skills: ${job.requiredSkills}`));
       card.appendChild(
         createEl(
           'p',

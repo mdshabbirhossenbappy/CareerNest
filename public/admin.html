@@ -8,12 +8,15 @@
   </head>
   <body>
     <header class="navbar">
-      <a href="/" class="brand">CareerNest</a>
+      <a href="/" class="brand">
+        <img src="/assets/logo.svg" alt="CareerNest Logo" class="brand-logo" />
+        <span>CareerNest</span>
+      </a>
       <nav class="nav-links" id="nav-actions"></nav>
     </header>
 
     <main class="container">
-      <section class="card">
+      <section class="page-banner">
         <h1>University Career Office — Admin Console</h1>
         <p class="subtitle">Signed in as <strong id="admin-email"></strong></p>
       </section>
@@ -77,20 +80,8 @@
 
       <div class="grid-2">
         <section class="card">
-          <h2>Departments &amp; Placement Statistics</h2>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Department</th>
-                  <th>Students</th>
-                  <th>Placed</th>
-                  <th>Rate</th>
-                </tr>
-              </thead>
-              <tbody id="admin-depts-body"></tbody>
-            </table>
-          </div>
+          <h2>Placement Rate by Department</h2>
+          <div id="dept-placement-chart"></div>
           <div id="dept-alert" class="alert hidden" role="alert"></div>
           <form id="add-dept-form" class="filter-bar">
             <div class="form-group">

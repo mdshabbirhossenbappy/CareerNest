@@ -64,6 +64,60 @@ export function clearEl(el) {
   }
 }
 
+export function getInitials(name) {
+  if (!name) return 'CN';
+  const words = name.trim().split(/\s+/).slice(0, 2);
+  return words.map((w) => w[0]?.toUpperCase() || '').join('') || 'CN';
+}
+
+export function buildSkillMeter(score, label = 'Skill Match') {
+  const wrapper = createEl('div', 'skill-meter');
+  const head = createEl('div', 'skill-meter-header');
+  head.appendChild(createEl('span', '', label));
+  head.appendChild(createEl('span', '', `${score}%`));
+  wrapper.appendChild(head);
+
+  const barClass =
+    score >= 70 ? 'visual-bar bar-high' : score >= 40 ? 'visual-bar' : 'visual-bar bar-low';
+  const progress = createEl('progress', barClass);
+  progress.value = score;
+  progress.max = 100;
+  wrapper.appendChild(progress);
+  return wrapper;
+}
+
+export function buildWorkflowStepper(currentStatus) {
+  const stages = [
+    ['SUBMITTED', 'Applied'],
+    ['UNDER_REVIEW', 'Review'],
+    ['SHORTLISTED', 'Shortlist'],
+    ['INTERVIEW_SCHEDULED', 'Interview'],
+    ['SELECTED', 'Selected'],
+    ['OFFER_ACCEPTED', 'Accepted'],
+  ];
+
+  const currentIdx = stages.findIndex(([key]) => key === currentStatus);
+  const isTerminalNegative = currentStatus === 'REJECTED' || currentStatus === 'WITHDRAWN';
+  const stepper = createEl('div', 'stepper');
+
+  stages.forEach(([_key, label], idx) => {
+    let cls = 'step-node';
+    if (isTerminalNegative && idx === 0) {
+      cls += ' step-rejected';
+    } else if (currentIdx > idx) {
+      cls += ' step-done';
+    } else if (currentIdx === idx) {
+      cls += ' step-active';
+    }
+    const node = createEl('div', cls);
+    node.appendChild(createEl('span', 'step-dot'));
+    node.appendChild(createEl('span', 'step-label', label));
+    stepper.appendChild(node);
+  });
+
+  return stepper;
+}
+
 export function statusBadgeClass(status) {
   if (['APPROVED', 'SELECTED', 'OFFER_ACCEPTED', 'RESOLVED', 'true'].includes(status)) {
     return 'badge badge-success';
@@ -163,8 +217,7 @@ export async function renderNotificationsPanel(containerId) {
         'div',
         n.isRead === 'true' ? 'notif-item' : 'notif-item notif-unread'
       );
-      const msg = createEl('span', '', n.message);
-      row.appendChild(msg);
+      row.appendChild(createEl('span', '', n.message));
 
       if (n.isRead !== 'true') {
         const btn = createEl('button', 'btn btn-outline btn-sm', 'Mark Read');

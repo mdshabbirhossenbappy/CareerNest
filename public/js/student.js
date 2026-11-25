@@ -6,6 +6,7 @@ import {
   renderNavbar,
   populateDepartmentSelect,
   renderNotificationsPanel,
+  buildWorkflowStepper,
   statusBadgeClass,
   createEl,
   clearEl,
@@ -41,7 +42,9 @@ async function loadSavedJobs() {
   items.forEach(({ job }) => {
     const card = createEl('div', 'job-card');
     card.appendChild(createEl('h3', '', job.title));
-    card.appendChild(createEl('p', 'subtitle', `${job.type} | ${job.location} | Deadline: ${job.deadline}`));
+    card.appendChild(
+      createEl('p', 'subtitle', `${job.type} | ${job.location} | Deadline: ${job.deadline}`)
+    );
     const link = createEl('a', 'btn btn-outline btn-sm', 'View on Job Board');
     link.href = '/jobs';
     card.appendChild(link);
@@ -66,6 +69,8 @@ async function loadApplications() {
     top.appendChild(createEl('span', statusBadgeClass(app.status), app.status));
     card.appendChild(top);
 
+    card.appendChild(buildWorkflowStepper(app.status));
+
     if (app.interviews && app.interviews.length > 0) {
       const iv = app.interviews[app.interviews.length - 1];
       const ivBox = createEl(
@@ -87,7 +92,8 @@ async function loadApplications() {
     const actions = createEl('div', 'actions-row');
     (app.allowedNextStatuses || []).forEach((nextStatus) => {
       const label = nextStatus === 'OFFER_ACCEPTED' ? 'Accept Job Offer' : 'Withdraw Application';
-      const cls = nextStatus === 'OFFER_ACCEPTED' ? 'btn btn-success btn-sm' : 'btn btn-danger btn-sm';
+      const cls =
+        nextStatus === 'OFFER_ACCEPTED' ? 'btn btn-success btn-sm' : 'btn btn-danger btn-sm';
       const btn = createEl('button', cls, label);
       btn.type = 'button';
       btn.addEventListener('click', async () => {
@@ -97,7 +103,8 @@ async function loadApplications() {
           body: {
             applicationId: app.id,
             toStatus: nextStatus,
-            note: nextStatus === 'OFFER_ACCEPTED' ? 'Student accepted offer' : 'Withdrawn by student',
+            note:
+              nextStatus === 'OFFER_ACCEPTED' ? 'Student accepted offer' : 'Withdrawn by student',
           },
         });
         await loadApplications();
