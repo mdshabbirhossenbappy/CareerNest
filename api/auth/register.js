@@ -1,5 +1,5 @@
 const BaseRepository = require('../../lib/baseRepository');
-const { batchAppendTabRows } = require('../../lib/sheetsClient');
+const { createIfUnique } = require('../../lib/sheetsClient');
 const { registerSchema } = require('../../lib/validators');
 const { hashPassword, getClientIp, sendJson } = require('../../lib/security');
 
@@ -20,14 +20,7 @@ module.exports = async function handler(req, res) {
     const usersRepo = new BaseRepository('Users');
     const auditRepo = new BaseRepository('AuditLog');
 
-    const [existing, passwordHash] = await Promise.all([
-      usersRepo.findWhere({ email }, { useCache: false }),
-      hashPassword(password),
-    ]);
-
-    if (existing.length > 0) {
-      return sendJson(res, 409, false, null, 'Unable to register with the provided email');
-    }
+    const passwordHash = await hashPassword(password);
 
     const preparedUser = usersRepo.prepareRecord({
       email,
@@ -79,7 +72,7 @@ module.exports = async function handler(req, res) {
     });
     batchEntries.push({ tabName: 'AuditLog', values: preparedAudit.values });
 
-    await batchAppendTabRows(batchEntries);
+    await createIfUnique('Users', 1, email, batchEntries);
 
     return sendJson(
       res,
@@ -96,6 +89,9 @@ module.exports = async function handler(req, res) {
       null
     );
   } catch (err) {
+    if (err.message && err.message.includes('DUPLICATE_RECORD')) {
+      return sendJson(res, 409, false, null, 'Unable to register with the provided email');
+    }
     return sendJson(res, 500, false, null, err.message || 'Registration error');
   }
 };

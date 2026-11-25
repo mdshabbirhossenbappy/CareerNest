@@ -38,7 +38,7 @@ async function initLandingSession() {
       sessionBox.classList.add('hidden');
       guestBox.classList.remove('hidden');
     }
-  } catch (_err) {
+  } catch {
     sessionBox.classList.add('hidden');
     guestBox.classList.remove('hidden');
   }
@@ -92,11 +92,8 @@ function initRegisterForm() {
         return;
       }
 
-      showAlert('register-alert', 'Account created! Redirecting to login...', true);
-      setTimeout(() => {
-        window.location.href = '/login';
-      }, 1200);
-    } catch (_err) {
+      window.location.href = '/login';
+    } catch {
       showAlert('register-alert', 'Network error. Please try again.');
       submitBtn.disabled = false;
       submitBtn.textContent = 'Create Account';
@@ -135,11 +132,8 @@ function initLoginForm() {
         return;
       }
 
-      showAlert('login-alert', 'Login successful! Redirecting...', true);
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 600);
-    } catch (_err) {
+      window.location.href = '/';
+    } catch {
       showAlert('login-alert', 'Network error. Please try again.');
       submitBtn.disabled = false;
       submitBtn.textContent = 'Sign In';
