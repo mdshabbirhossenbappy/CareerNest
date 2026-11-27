@@ -27,11 +27,15 @@ async function seedSheetDatabase() {
   const existingDepts = await departmentsRepo.findAll(false, { useCache: false });
   if (existingDepts.length === 0) {
     const defaults = [
-      { name: 'Computer Science & Engineering', code: 'CSE' },
-      { name: 'Electrical & Electronic Engineering', code: 'EEE' },
-      { name: 'Business Administration', code: 'BBA' },
-      { name: 'Textile Engineering', code: 'TE' },
-      { name: 'English', code: 'ENG' },
+      { name: 'Department of Computer Science & Engineering', code: 'CSE' },
+      { name: 'Department of Business Administration', code: 'BBA' },
+      { name: 'Department of Textile Engineering', code: 'TEXTILE' },
+      { name: 'Department of English', code: 'ENGLISH' },
+      { name: 'Department of Law', code: 'LAW' },
+      { name: 'Department of Apparel Merchandising & Management', code: 'AMM' },
+      { name: 'Department of AI & Data Science', code: 'AI&DS' },
+      { name: 'Master of Arts in English (MA in English)', code: 'MA-ENGLISH' },
+      { name: 'Master of Business Administration (MBA)', code: 'MBA' },
     ];
     for (const dept of defaults) {
       await departmentsRepo.create(dept);
