@@ -34,8 +34,8 @@ async function seedSheetDatabase() {
       { name: 'Department of Law', code: 'LAW' },
       { name: 'Department of Apparel Merchandising & Management', code: 'AMM' },
       { name: 'Department of AI & Data Science', code: 'AI&DS' },
-      { name: 'Master of Arts in English (MA in English)', code: 'MA-ENGLISH' },
-      { name: 'Master of Business Administration (MBA)', code: 'MBA' },
+      { name: 'Master of Arts in English', code: 'MA-ENGLISH' },
+      { name: 'Master of Business Administration', code: 'MBA' },
     ];
     for (const dept of defaults) {
       await departmentsRepo.create(dept);
